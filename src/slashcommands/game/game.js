@@ -223,7 +223,7 @@ async function handleBan(interaction, apiKey, chosenServer, validatedPlayer, dur
     const playerBanned = await isUserBanned(apiKey, chosenServer, validatedPlayer);
     if (playerBanned) {
         return await handleGetRestriction(interaction, apiKey, chosenServer, validatedPlayer, false, playerThumbnail);
-    }
+    };
 
     try {
         const banState = await apply_restriction(apiKey, chosenServer, validatedPlayer.id, true, displayReason, privateReason, duration, excludeAlts);
@@ -386,24 +386,18 @@ async function handleWarn(interaction, apiKey, chosenServer, validatedPlayer, di
 
 async function handleInteraction(interaction, settings, actionType) {
     const actionName = `${actionType.charAt(0).toUpperCase() + actionType.slice(1)}`;
-    /*
-        warn: server, player, reason
-        kick: server, player, reason
-        unban: server, player, reason, internal-reason, apply-to-universe
-        ban: server, player, duration, length, display-reason, internal-reason, exclude-alts, apply-to-universe
-        get-restriction: server, player, history
-    */
 
-    const chosenServer = interaction.options.getString('server');
-    const chosenPlayer = interaction.options.getString('player');
-    const chosenReason = interaction.options.getString('reason');
-    const displayReason = interaction.options.getString('display-reason');
-    const internalReason = interaction.options.getString('internal-reason') ?? displayReason ?? chosenReason;
-    const chosenDuration = interaction.options.getNumber('duration');
-    const chosenLength = interaction.options.getString('length');
-    const useHistory = interaction.options.getBoolean('history');
-    const applyToUniverse = interaction.options.getBoolean('apply-to-universe') ?? false;
-    const excludeAlts = interaction.options.getBoolean('exclude-alts') ?? false;
+    const { options } = interaction;
+    const chosenServer = options.getString('server');
+    const chosenPlayer = options.getString('player');
+    const chosenReason = options.getString('reason');
+    const displayReason = options.getString('display-reason');
+    const internalReason = options.getString('internal-reason') ?? displayReason ?? chosenReason;
+    const chosenDuration = options.getNumber('duration');
+    const chosenLength = options.getString('length');
+    const useHistory = options.getBoolean('history');
+    const applyToUniverse = options.getBoolean('apply-to-universe') ?? false;
+    const excludeAlts = options.getBoolean('exclude-alts') ?? false;
 
     try {
         const { apiKey, validatedPlayer, playerThumbnail } = await validateAndRetrieve(interaction, chosenPlayer);
@@ -419,26 +413,25 @@ async function handleInteraction(interaction, settings, actionType) {
                 Are you sure you want to ban **${validatedPlayer.name}**?
                 \nDuration: **${format}**
                 \nDisplay Reason: **${displayReason}**
-                \n Private Reason: **${internalReason}
+                \nPrivate Reason: **${internalReason}
                 **`;
-
-                actionFunction = () => handleBan(interaction, apiKey, chosenServer, validatedPlayer, seconds, displayReason, internalReason, excludeAlts, applyToUniverse, playerThumbnail);
+                actionFunction = async () => handleBan(interaction, apiKey, chosenServer, validatedPlayer, seconds, displayReason, internalReason, excludeAlts, applyToUniverse, playerThumbnail);
                 break;
             case 'unban':
                 confirmationMessage = `Are you sure you want to unban **${validatedPlayer.name}**?`;
-                actionFunction = () => handleUnban(interaction, apiKey, chosenServer, chosenReason, internalReason, validatedPlayer, applyToUniverse, playerThumbnail);
+                actionFunction = async () => handleUnban(interaction, apiKey, chosenServer, chosenReason, internalReason, validatedPlayer, applyToUniverse, playerThumbnail);
                 break;
             case 'kick':
                 confirmationMessage = `Are you sure you want to kick **${validatedPlayer.name}**?\n\nReason: **${chosenReason}**`;
-                actionFunction = () => handleKick(interaction, apiKey, chosenServer, validatedPlayer, chosenReason, playerThumbnail);
+                actionFunction = async () => handleKick(interaction, apiKey, chosenServer, validatedPlayer, chosenReason, playerThumbnail);
                 break;
             case 'warn':
                 confirmationMessage = `Are you sure you want to warn **${validatedPlayer.name}**?\n\nReason: **${chosenReason}**`;
-                actionFunction = () => handleWarn(interaction, apiKey, chosenServer, validatedPlayer, chosenReason, playerThumbnail);
+                actionFunction = async () => handleWarn(interaction, apiKey, chosenServer, validatedPlayer, chosenReason, playerThumbnail);
                 break;
             case 'get-restriction':
                 confirmationMessage = `Are you sure you want to retrieve restrictions for **${validatedPlayer.name}**?`;
-                actionFunction = () => handleGetRestriction(interaction, apiKey, chosenServer, validatedPlayer, useHistory, playerThumbnail);
+                actionFunction = async () => handleGetRestriction(interaction, apiKey, chosenServer, validatedPlayer, useHistory, playerThumbnail);
                 break;
         }
 

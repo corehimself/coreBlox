@@ -7,33 +7,30 @@ local Players = game:GetService("Players");
 local MessagingService = game:GetService("MessagingService");
 local HTTPService = game:GetService("HttpService");
 
-local function customFunction(actionType: "Kick" | "Warn", playerModerated: Player)
+type moderationLike = {
+	UserIds: { number },
+	DisplayReason: string,
+	Method: "Kick" | "Warn",
+};
+
+local function customFunction(playerModerated: Player, data: moderationLike)
 	-- an accessible function to trigger external signals
 	-- events, kick, etc as needed
+	local reason = data.DisplayReason;
+	local actionType = data.Method;
+
 	if (actionType == "Kick") then
-		playerModerated:Kick()
+		playerModerated:Kick(reason);
 	end
 end
 
-local function PlayerAdded(player: Player)	
-	local messageServiceConn = MessagingService:SubscribeAsync("DTR", function(data)
-		data = HTTPService:JSONDecode(data.Data);
+MessagingService:SubscribeAsync("DTR", function(data)
+	data = HTTPService:JSONDecode(data.Data);
 
-		local userId = data.UserIds[1];
-		local reason = data.DisplayReason;
-		local method = data.Method;
+	local userId = data.UserIds[1];
+	local player = Players:GetPlayerByUserId(userId)
 
-		local player = Players:GetPlayerByUserId(userId)
-		if (player) then
-			customFunction(method, player);
-		end
-	end);
-
-	player.AncestryChanged:Connect(function(child: Instance, parent: Instance)
-		if (not parent) then
-			messageServiceConn:Disconnect();
-		end
-	end)
-end
-
-Players.PlayerAdded:Connect(PlayerAdded)
+	if (player) then
+		customFunction(player, data);
+	end
+end);

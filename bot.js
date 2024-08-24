@@ -23,7 +23,7 @@ new CommandKit({
 });
 
 mongoose.connect(process.env.MONGODB_URI).then(async () => {
-	console.log('Database connected');
+	require('./error')();
 	loadCollection(client, 'buttons');
 	loadCollection(client, 'modals');
 
