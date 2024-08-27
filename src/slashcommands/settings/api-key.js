@@ -1,5 +1,6 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { getSettings, setApiKey } = require('../../schemas/guild');
+const { createEmbed, createFieldEmbed } = require('../../utils/Helpers');
 
 const WARN_COLOR = '#eb4034';
 const CONSTRAST_SUCCESS = '#0099ff';
@@ -36,24 +37,17 @@ module.exports = {
         switch(sub) {
             case 'set':
                 await setApiKey(guildId, apiKey);
-                selectedEmbed = new EmbedBuilder()
-                    .setTitle('✔️ API Key Saved Successfully')
-                    .addFields(
-                        { name: 'REMINDER:', value: 'Never share your API keys with anyone! Doing so may completely expose your linked experience.', inline: false }
-                    )
-                    .setColor(CONSTRAST_SUCCESS);
+                selectedEmbed = createFieldEmbed('✔️ API Key Saved Successfully', [
+                    { name: 'REMINDER:', value: 'Never share your API keys with anyone! Doing so may completely expose your linked experience.', inline: false }
+                ], CONSTRAST_SUCCESS)
                 break;
             case 'remove':
                 if (settings.cloud.apiKey) {
                     settings.cloud.apiKey = null;
                     await settings.save();
-                    selectedEmbed = new EmbedBuilder()
-                        .setTitle('✔️ API Key Removed Successfully')
-                        .setColor(CONSTRAST_SUCCESS);
+                    selectedEmbed = createEmbed('✔️ API Key Removed Successfully', null, CONSTRAST_SUCCESS)
                 } else {
-                    selectedEmbed = new EmbedBuilder()
-                        .setTitle('❌ No API key configured! Did you set one?')
-                        .setColor(WARN_COLOR)
+                    selectedEmbed = createEmbed('❌ No API key configured! Did you set one?', null, WARN_COLOR)
                 }
                 break;
         }

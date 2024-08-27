@@ -1,5 +1,6 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { getSettings } = require('../../schemas/guild');
+const { createEmbed, createFieldEmbed } = require('../../utils/Helpers');
 
 // const WARN_COLOR = '#eb4034';
 // const SUCCESS_COLOR = '#00ff44';
@@ -38,21 +39,12 @@ module.exports = {
         switch (sub) {
             case 'set':
                 if (data.botExecutor) {
-                    selectedEmbed = new EmbedBuilder()
-                        .setTitle('❌ Bot Settings Failed to Update')
-                        .setDescription(`${interaction.guild.roles.cache.find(role => role.id === data.botExecutor)} is currently set as the bot executor`)
+                    selectedEmbed = createEmbed('❌ Bot Settings Failed to Update', `${interaction.guild.roles.cache.find(role => role.id === data.botExecutor)} is currently set as the bot executor`)
                 } else {
-                    selectedEmbed = new EmbedBuilder()
-                        .setTitle('✅ Bot Settings Updated')
-                        .setDescription(`The bot executor role has been updated to ${selectedRole}`)
-                        .setColor(CONSTRAST_SUCCESS)
-                        .setThumbnail(guild.iconURL())
-                        .addFields(
-                            { name: '🪪 Role', value: `${selectedRole}`, inline: true },
-                            { name: '🆔 Role ID', value: `${selectedRole.id}`, inline: true }
-                        )
-                        .setTimestamp()
-                        .setFooter({ text: 'Bot Settings', iconURL: client.user.avatarURL() });
+                    selectedEmbed = createFieldEmbed('✅ Bot Settings Updated', [
+                        { name: '🪪 Role', value: `${selectedRole}`, inline: true },
+                        { name: '🆔 Role ID', value: `${selectedRole.id}`, inline: true }
+                    ], CONSTRAST_SUCCESS, guild.iconURL(), { text: 'Bot Settings', iconURL: client.user.avatarURL() }, `The bot executor role has been updated to ${selectedRole}`)
 
                     data.botExecutor = selectedRole.id;
                     await data.save();
@@ -60,15 +52,13 @@ module.exports = {
                 break;
             case 'remove':
                 if (data.botExecutor) {
-                    selectedEmbed = new EmbedBuilder()
-                        .setTitle('✅ Bot Settings Updated')
-                        .setDescription(`${interaction.guild.roles.cache.find(role => role.id === data.botExecutor)} has been removed as the bot executor role`);
+                    selectedEmbed = createEmbed('✅ Bot Settings Updated', `${interaction.guild.roles.cache.find(role => role.id === data.botExecutor)} has been removed as the bot executor role`)
 
                     data.botExecutor = null;
                     await data.save();
                 } else {
-                    selectedEmbed = new EmbedBuilder()
-                        .setTitle('❌ There is currently no role assigned as bot executor');
+                    selectedEmbed = createEmbed('❌ There is currently no role assigned as bot executor')
+
                 }
                 break;
         }

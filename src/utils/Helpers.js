@@ -1,11 +1,15 @@
 const { EmbedBuilder } = require('discord.js');
 const crypto = require('crypto');
-
 require('dotenv/config');
 
 // Encryption settings
 const CRYPTO_ALGO = "aes-256-cbc";
 const CRYPTO_CIPHER_KEY = Buffer.from(process.env.ENCRYPTION_KEY, 'base64');
+
+const colorToCode = {
+    red: '#eb4034',
+    green: '#0099ff',
+};
 
 const encrypt = (passedText) => {
     const iv = crypto.randomBytes(16);
@@ -25,7 +29,7 @@ const decrypt = (passedText) => {
     return decrypted;
 };
 
-function createEmbed(title, description, color, thumbnail = '') {
+function createEmbed(title, description, color, thumbnail = '', footer) {
     const embed = new EmbedBuilder()
         .setTitle(title)
         .setTimestamp();
@@ -42,10 +46,14 @@ function createEmbed(title, description, color, thumbnail = '') {
         embed.setThumbnail(thumbnail);
     }
 
+    if (footer) {
+        embed.setFooter(footer)
+    }
+
     return embed;
 }
 
-function createFieldEmbed(title, fields, color, thumbnail) {
+function createFieldEmbed(title, fields, color, thumbnail, footer, desc) {
     const embed = new EmbedBuilder()
         .setTitle(title)
         .setTimestamp();
@@ -60,6 +68,10 @@ function createFieldEmbed(title, fields, color, thumbnail) {
     
     if (thumbnail) {
         embed.setThumbnail(thumbnail);
+    }
+
+    if (footer) {
+        embed.setFooter(footer);
     }
 
     return embed;

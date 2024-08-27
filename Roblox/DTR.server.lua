@@ -1,7 +1,7 @@
 -------
 -- Made by: corehimself
 -- Created: 2/28/2023
--- Updated: 8/10/2024
+-- Updated: 8/24/2024
 -------
 local Players = game:GetService("Players");
 local MessagingService = game:GetService("MessagingService");

@@ -1,5 +1,6 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { getSettings } = require('../../schemas/guild');
+const { createEmbed } = require('../../utils/Helpers');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -65,45 +66,36 @@ module.exports = {
             case 'set':
                 if (banAppealsChannel) {
                     if (appealObject) {
-                        selectedEmbed = new EmbedBuilder()
-                            .setTitle(`❌ Logging Ban Appeals to ${banAppealsChannel}`);
+                        selectedEmbed = createEmbed(`❌ Logging Ban Appeals to ${banAppealsChannel}`)
                         break;
                     }
                     settings.logging.log_channels.push({
                         _id: banAppealsChannel.id,
                         name: 'appeals'
                     });
-                    selectedEmbed = new EmbedBuilder()
-                        .setTitle(`✅ Logging ban appeals to ${banAppealsChannel}`);
+                    selectedEmbed = createEmbed(`✅ Logging ban appeals to ${banAppealsChannel}`)
                 }
                 if (modActionsChannel) {
                     if (modObject) {
-                        selectedEmbed = new EmbedBuilder()
-                            .setTitle(`❌ Logging Ban Appeals to ${banAppealsChannel}`);
+                        selectedEmbed = createEmbed(`❌ Logging Ban Appeals to ${banAppealsChannel}`)
                         break;
                     }
                     settings.logging.log_channels.push({
                         _id: modActionsChannel.id,
                         name: 'moderation'
                     });
-                    selectedEmbed = new EmbedBuilder()
-                        .setTitle(`✅ Logging moderation actions to ${modActionsChannel}`);
+                    selectedEmbed = createEmbed(`✅ Logging moderation actions to ${modActionsChannel}`);
                 }
 
                 await settings.save();
                 break;
             case 'remove':
                 if (banAppealsChannel) {
-                    if (!appealObject) selectedEmbed =
-                        new EmbedBuilder()
-                            .setTitle(`❌ There is currently no ban appeal channel set!`);
-                    
+                    if (!appealObject) selectedEmbed = createEmbed(`❌ There is currently no ban appeal channel set!`);
                     break;
                 }
                 if (modActionsChannel) {
-                    if (!modObject) selectedEmbed =
-                        new EmbedBuilder()
-                            .setTitle(`❌ There is currently no moderation channel set!`);
+                    if (!modObject) selectedEmbed = createEmbed(`❌ There is currently no moderation channel set!`);
                     break;
                 }
                 const channelToRemove = options.get('channel');
@@ -112,8 +104,7 @@ module.exports = {
                     ? modObject._id
                     : appealObject._id)
 
-                selectedEmbed = new EmbedBuilder()
-                    .setTitle(`✅ ${fetchedChannel} has been removed`)
+                selectedEmbed = createEmbed(`✅ ${fetchedChannel} has been removed`)
                 if (channelToRemove === 'moderation') settings.logging.log_channels.moderation = null;
                 if (channelToRemove === 'appeals') settings.logging.log_channels.appeals = null;
 
@@ -124,8 +115,7 @@ module.exports = {
                 settings.logging.enabled = enabledState;
                 await settings.save();
 
-                selectedEmbed = new EmbedBuilder()
-                    .setTitle(`✅ Logging is now: ${enabledState === true ? 'Enabled' : 'Disabled'}`)
+                selectedEmbed = createEmbed(`✅ Logging is now: ${enabledState === true ? 'Enabled' : 'Disabled'}`)
                 break;
         }
 

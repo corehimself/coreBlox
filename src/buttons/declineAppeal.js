@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { getSettings } = require('../schemas/guild');
 const appealSchema = require('../schemas/appeals');
+const { createEmbed } = require('../utils/Helpers');
 
 module.exports = {
     name: 'decline-appeal',
@@ -14,15 +15,13 @@ module.exports = {
         const appealObject = settings.logging.log_channels.find(channel => channel.name === 'appeals');
         const logChannel = client.channels.cache.get(appealObject._id);
         
-        const rejectedEmbed = new EmbedBuilder()
-            .setTitle('🔨 Application Status')
-            .setDescription(
-                `Your ban application from **${interaction.guild.name}** has been **rejected**!
-                \n
-                \n🪪 Moderated User: **${userAppeals.Data[0].robloxUser}**
-                \n🆔 Game Link: https://roblox.com/games/${userAppeals.Data[0].chosenServer}
-                `
-            );
+        const rejectedEmbed = createEmbed('🔨 Application Status', `
+            Your ban application from **${interaction.guild.name}** has been **rejected**!
+            \n
+            \n🪪 Moderated User: **${userAppeals.Data[0].robloxUser}**
+            \n🆔 Game Link: https://roblox.com/games/${userAppeals.Data[0].chosenServer}
+            `
+        )
 
         await member.send({
             embeds: [ rejectedEmbed ]

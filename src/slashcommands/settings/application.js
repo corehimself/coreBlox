@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { createEmbed } = require('../../utils/Helpers');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -21,11 +22,7 @@ module.exports = {
             .setStyle(ButtonStyle.Secondary);
 
         const row = new ActionRowBuilder().addComponents(submitAppealButton);
-        const unbanEmbed = new EmbedBuilder()
-            .setTitle('✏️ Unban Appeal')
-            .setDescription('Please fill out the form below to appeal your ban')
-            .setColor('#0099ff')
-            .setTimestamp();
+        const unbanEmbed = createEmbed('✏️ Unban Appeal', 'Please fill out the form below to appeal your ban', '#0099ff')
 
         await selectedChannel.send({
             embeds: [ unbanEmbed ],

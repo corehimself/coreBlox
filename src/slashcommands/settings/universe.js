@@ -3,6 +3,7 @@ const { getUniverseIdFromPlace } = require('../../utils/RobloxHelpers')
 const {
     addUniverse, removeUniverse, getUniverse, listUniverses
 } = require('../../schemas/guild');
+const { createEmbed } = require('../../utils/Helpers');
 
 const WARN_COLOR = '#eb4034';
 const SUCCESS_COLOR = '#00ff44';
@@ -59,30 +60,22 @@ module.exports = {
         switch (sub) {
             case 'add':
                 if (keyReserved) {
-                    selectedEmbed = new EmbedBuilder()
-                        .setTitle(`❌ **${universeName}** already exists!`)
-                        .setColor(WARN_COLOR)
+                    selectedEmbed = createEmbed(`❌ **${universeName}** already exists!`, null, WARN_COLOR)
                 } else {
                     const result = await addUniverse(guildId, universeName, universeId);
-                    selectedEmbed = new EmbedBuilder()
-                        .setTitle(`${result ? '✔️ Universe Saved' : '❌ Universe Save Failed'}`)
-                        .setDescription(`${result ? 'Successfully saved' : 'Failed to save'}: **${universeName}**`)
-                        .setColor(`${result ? SUCCESS_COLOR : WARN_COLOR}`)
+                    selectedEmbed = createEmbed(`${result ? '✔️ Universe Saved' : '❌ Universe Save Failed'}`,
+                        `${result ? 'Successfully saved' : 'Failed to save'}: **${universeName}**`,
+                        `${result ? SUCCESS_COLOR : WARN_COLOR}`
+                    )
                 }
                 break;
             case 'remove':
                 await removeUniverse(guildId, universeName);
-                selectedEmbed = new EmbedBuilder()
-                    .setTitle('✔️ Universe saved')
-                    .setDescription(`**${universeName}** has been removed`)
-                    .setColor(WARN_COLOR)
+                selectedEmbed = createEmbed('✔️ Universe saved', `**${universeName}** has been removed`, WARN_COLOR)
                 break;
             case 'list':
                 var universes = await listUniverses(guildId);
-                selectedEmbed = new EmbedBuilder()
-                    .setTitle('📝 List of Universes')
-                    .setColor(CONSTRAST_SUCCESS)
-                    .setTimestamp();
+                selectedEmbed = createEmbed('📝 List of Universes', null, CONSTRAST_SUCCESS)
 
                 if (universes.length > 0) {
                     universes.forEach(async universe => {

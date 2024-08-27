@@ -19,8 +19,15 @@
     <ul>
         <li><a href = "#prerequisites">Prerequisites</a></li>
         <li><a href = "#installation">Installation</a></li>
+        <li><a href = "#setup">Setup</a></li>
     </ul>
     <li><a href="#usage">Usage</a></li>
+    <ul>
+      <li><a href = "#managing-your-roblox-api-key">Managing an API key</a></li>
+      <li><a href="#managing-universes">Managing universes</a></li>
+      <li><a href="#managing-bansunbans">Managing bans/unbans</a></li>
+      <li><a href="#bot-configuration">Bot configuration</a></li>
+    </ul>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -41,18 +48,51 @@ npm install npm@latest-g
 ```
 
 ### Installation
-- Install package modules
+- Fork the repository / download the latest release
+- Install package modules in a preferred terminal of your choice
 ```markdown
 npm install
 ```
+- Install & place the [Roblox Script](coreBlox/Roblox/DTR.server.lua) into **ServerScriptService**
+
+### Setup
+- Firstly, head over to your .env file and set your `BOT_TOKEN`, `MONGODB_URI` and `ENCRYPTION_KEY` respectively.
+
+`BOT_TOKEN`: Your discord bots token
+
+`MONGODB_URI`: Your mongo DB connection URL used for starting your bot when connected
+
+`ENCRYPTION_KEY`: A random strong 16+ character key used for encoding & decoding
 
 ## Usage
-`/api-key set <key>`
+Once your bot is properly configured, running `node .` in the terminal will bring your bot online!
+
+### Managing your Roblox API key
+* More information on retrieving your key can be found [here](https://create.roblox.com/docs/cloud/open-cloud/api-keys)
+* `/api-key set <YOUR_RETRIEVED_KEY>`: Sets/Overwrites a set API key
+* `/api-key remove`: Removes the configured API key
+
+### Managing Universes
+* `/universe add <game_name> <universe_id>`: Adds `<game_name>` to the database
+* `/universe remove <game_name>`: Removes `<game_name>` from the database
+* `/universe list`: Lists all saved universes
+
+### Managing Bans/Unbans
+
+### Bot Configuration
+* `/bot-role set <role>`: Sets the specified role as a Bot Executor (overwrites)
+* `/bot-role remove`: Removes any configured roles
+* `/logging enabled <boolean>`: Sets whether actions are logged
+* `/logging remove <channel>`: Removes logging for a specified channel (moderation/results)
 
 ## Roadmap
-* [ ] To do
+* [ ] Complete docs
+* [ ] Video release
+* [ ] API Key verification
+* [ ] Prompt multiple users on action lookup
+
 ## License
-Distributed under the MIT License.
+coreBlox is distributed under the MIT License.
 <details>
   <summary>View License</summary>
 

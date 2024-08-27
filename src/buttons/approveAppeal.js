@@ -1,7 +1,6 @@
 const { createEmbed, createFieldEmbed, handleConfirmation } = require('../utils/Helpers');
 const { apply_restriction, getUniverseIdFromPlace, validateAndRetrieve } = require('../utils/RobloxHelpers');
 const appealSchema = require('../schemas/appeals');
-const { EmbedBuilder } = require('discord.js');
 
 const WARN_COLOR = '#eb4034';
 const SUCCESS_COLOR = '#00ff44';
@@ -34,16 +33,13 @@ module.exports = {
                         user: userAppeals.Data[0].interactionUser,
                         force: true
                     });
-                    const unbannedEmbed = new EmbedBuilder()
-                        .setTitle('🔨 Application Status')
-                        .setDescription(
-                            `Your ban application from **${interaction.guild.name}** has been **accepted**!
-                            \n
-                            \n🪪 Moderated User: ${userAppeals.Data[0].robloxUser}
-                            \n🆔 Game Link: https://roblox.com/games/${userAppeals.Data[0].chosenServer}
-                            `
-                        )
-                        .setTimestamp();
+                    const unbannedEmbed = createEmbed('🔨 Application Status', `
+                        Your ban application from **${interaction.guild.name}** has been **accepted**!
+                        \n
+                        \n🪪 Moderated User: ${userAppeals.Data[0].robloxUser}
+                        \n🆔 Game Link: https://roblox.com/games/${userAppeals.Data[0].chosenServer}
+                        `
+                    )
 
                     await member.send({
                         embeds: [ unbannedEmbed ]

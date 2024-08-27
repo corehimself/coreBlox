@@ -17,8 +17,6 @@ new CommandKit({
 	commandsPath: `${__dirname}/src/slashcommands`,
 	eventsPath: `${__dirname}/src/events`,
 	validationsPath: `${__dirname}/src/validations`,
-	devGuildIds: ['1086370614459240538'],
-	devUserIds: ['836773043014860810'],
 	bulkRegister: true,
 });
 
