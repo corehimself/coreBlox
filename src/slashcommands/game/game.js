@@ -150,7 +150,7 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('get-restriction')
-                .setDescription('Returns a list of all saved universes')
+                .setDescription('Returns restrictions for a user')
                 .addStringOption(option =>
                     option
                         .setName('server')

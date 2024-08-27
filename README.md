@@ -4,7 +4,7 @@
 </p>
 <p align="center" style="margin: 0.1;"><strong>coreBlox</strong></p>
 <p align="center" style="margin: 0;">A Discord to Roblox utility</p>
-<p align="center" style="margin: 0.1;"><a href="URL_OF_YOUR_LINK">Explore the docs »</a></p>
+<p align="center" style="margin: 0.1;"><a href="">Explore the docs »</a></p>
 <p align="center" style="margin: 0;">
   <a href="">View Demo</a> · 
   <a href="">Report Bug</a> · 
@@ -23,9 +23,11 @@
     </ul>
     <li><a href="#usage">Usage</a></li>
     <ul>
-      <li><a href = "#managing-your-roblox-api-key">Managing an API key</a></li>
-      <li><a href="#managing-universes">Managing universes</a></li>
-      <li><a href="#managing-bansunbans">Managing bans/unbans</a></li>
+      <li><a href = "#managing-your-roblox-api-key">Managing An API Key</a></li>
+      <li><a href="#managing-universes">Managing Universes</a></li>
+      <li><a href="#moderation-management">Moderation Management</a></li>
+      <li><a href="#logging-management">Logging Management</a></li>
+      <li><a href="#appeal-system">Appeal System</a></li>
       <li><a href="#bot-configuration">Bot configuration</a></li>
     </ul>
     <li><a href="#roadmap">Roadmap</a></li>
@@ -58,11 +60,9 @@ npm install
 ### Setup
 - Firstly, head over to your .env file and set your `BOT_TOKEN`, `MONGODB_URI` and `ENCRYPTION_KEY` respectively.
 
-`BOT_TOKEN`: Your discord bots token
-
-`MONGODB_URI`: Your mongo DB connection URL used for starting your bot when connected
-
-`ENCRYPTION_KEY`: A random strong 16+ character key used for encoding & decoding
+* `BOT_TOKEN`: Your [discord bots token](https://discord.com/developers/applications)
+* `MONGODB_URI`: Your [mongo DB connection URL](https://www.mongodb.com/docs/manual/reference/connection-string/) used for starting your bot when connected
+* `ENCRYPTION_KEY`: A random secure 16+ character key used for encoding & decoding
 
 ## Usage
 Once your bot is properly configured, running `node .` in the terminal will bring your bot online!
@@ -77,45 +77,39 @@ Once your bot is properly configured, running `node .` in the terminal will brin
 * `/universe remove <game_name>`: Removes `<game_name>` from the database
 * `/universe list`: Lists all saved universes
 
-### Managing Bans/Unbans
+### Moderation Management
+* `/game get-restriction <server> <identifier> <history>`: Returns any restrictions or bans for a specified player from a universe
+* `/game warn <server> <player> <reason>`: Warns a user in game with a specified reason
+* `/game kick <server> <player> <reason>`: Kicks a user in game
+* `/game ban <server> <player> <duration> <length> <display-reason>`: Bans a user using the [Ban API](https://devforum.roblox.com/t/introducing-the-ban-api-and-alt-account-detection/3039740)
+* `/game unban <server> <player> <reason>`: Unbans a user using the [Ban API](https://devforum.roblox.com/t/introducing-the-ban-api-and-alt-account-detection/3039740)
+
+### Logging Management
+* `/logging enabled <boolean>`: Sets whether actions are logged
+* `/logging set <ban-appeals/moderation> <channel>`: Sets the specified channel as the logging channel for the set action (ban-appeals/moderation)
+* `/logging remove <channel>`: Removes logging for a specified channel (moderation/results)
+
+### Appeal System
+* `/send-application <channel>`: Sends the unban application form to the specified channel
 
 ### Bot Configuration
 * `/bot-role set <role>`: Sets the specified role as a Bot Executor (overwrites)
 * `/bot-role remove`: Removes any configured roles
-* `/logging enabled <boolean>`: Sets whether actions are logged
-* `/logging remove <channel>`: Removes logging for a specified channel (moderation/results)
 
 ## Roadmap
-* [ ] Complete docs
-* [ ] Video release
+* [X] ~~*Complete docs*~~ [2024-08-26]
+* [ ] Doc styling *(help images)*
+* [ ] Tutorial video
 * [ ] API Key verification
 * [ ] Prompt multiple users on action lookup
+* [ ] Allow developers to configure forms/default embeds
+
+## Contributing
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 ## License
-coreBlox is distributed under the MIT License.
-<details>
-  <summary>View License</summary>
+coreBlox is distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
-```markdown
-MIT License
-
-Copyright (c) 2024 Elijah T. K.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+## Contact
+* Elijah King - [@xCor_e](https://twitter.com/xCor_e) - corehimself@gmail.com
+* Project: https://github.com/corehimself/coreBlox
